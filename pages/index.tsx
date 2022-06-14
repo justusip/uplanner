@@ -1,12 +1,29 @@
 import type {NextPage} from "next";
 import React, {useEffect} from "react";
-import {BsFillCaretDownFill, BsFillCaretLeftFill, BsFillCaretRightFill} from "react-icons/bs";
+import {
+    BsArrowLeft,
+    BsArrowRight,
+    BsFillCaretDownFill,
+    BsFillCaretLeftFill,
+    BsFillCaretRightFill
+} from "react-icons/bs";
 import moment from "moment";
-import CourseSelection from "../components/CourseSelection";
+import CourseSelection from "../types/CourseSelection";
 import SelectionPanel from "../components/SelectionPanel";
 import Timetable from "../components/Timetable";
-import Course from "../components/Course";
+import Course from "../types/Course";
 import ical from "ical-generator";
+import IntrinsicButton from "../components/IntrinsicButton";
+
+const DateButton = (props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+    onPrevClicked: () => void,
+    onNextClicked: () => void,
+}) =>
+    <div className={"flex text-sm bg-white border rounded"}>
+        <IntrinsicButton className={"px-2 py-1"} onClick={props.onPrevClicked}><BsArrowLeft/></IntrinsicButton>
+        <IntrinsicButton {...props} className={"border-x px-2 py-1"}>{props.children}</IntrinsicButton>
+        <IntrinsicButton className={"px-2 py-1"} onClick={props.onNextClicked}><BsArrowRight/></IntrinsicButton>
+    </div>;
 
 const Home: NextPage = () => {
     const [courseCatalog, setCourseCatalog] = React.useState<Course[] | null>(null);
@@ -89,28 +106,20 @@ const Home: NextPage = () => {
         return <div/>;
 
     return <div className={"h-screen flex flex-col"}>
-        <div className={"p-2 border flex bg-gray-100 place-items-center"}>
+        <div className={"p-2 border flex gap-2  bg-gray-100 place-items-center"}>
             {/*<div className={"text-sm"}>Timetable Planner</div>*/}
-            <button className={"button ml-1 flex place-items-center place-content-between w-[150px]"}>
+            <IntrinsicButton className={"ml-1 flex place-items-center place-content-between w-[150px]"}>
                 2021-2022 Sem 2
                 <BsFillCaretDownFill className={"text-xs"}/>
-            </button>
-            <button className={"button ml-1 flex place-items-center place-content-between w-[220px]"}>
-                {`${beginDay.format("DD MMM YYYY")} - ${beginDay.clone().add(6, "days").format("DD MMM YYYY")}`}
-                <BsFillCaretDownFill className={"text-xs"}/>
-            </button>
-            <button className={"button"}
-                    onClick={() => setBeginDay(beginDay.clone().add(-7, "days"))}>
-                <BsFillCaretLeftFill/>
-            </button>
-            <button className={"button"}
-                    onClick={() => setBeginDay(beginDay.clone().add(7, "days"))}>
-                <BsFillCaretRightFill/>
-            </button>
-            <button className={"button ml-1"}
-                    onClick={() => downloadICS()}>
+            </IntrinsicButton>
+            <DateButton onPrevClicked={() => setBeginDay(beginDay.clone().add(-7, "days"))}
+                        onNextClicked={() => setBeginDay(beginDay.clone().add(7, "days"))}>
+                {beginDay.format("DD MMM YYYY")} ~ {beginDay.clone().add(6, "days").format("DD MMM YYYY")}
+            </DateButton>
+            <IntrinsicButton className={"ml-1"}
+                             onClick={() => downloadICS()}>
                 Export
-            </button>
+            </IntrinsicButton>
         </div>
         <div className={"flex grow"}>
             <Timetable beginDay={beginDay}

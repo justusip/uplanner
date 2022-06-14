@@ -1,7 +1,7 @@
 import {Draggable} from "react-beautiful-dnd";
 import {BsXLg} from "react-icons/bs";
 import React from "react";
-import Course from "./Course";
+import Course from "../types/Course";
 import cx from "classnames";
 
 export default function SelectionPanel(props: {

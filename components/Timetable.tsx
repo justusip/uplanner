@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
-import CourseSelection from "./CourseSelection";
-import Course from "./Course";
+import CourseSelection from "../types/CourseSelection";
+import Course from "../types/Course";
 
 export default function Timetable(props: {
     beginDay: moment.Moment,
@@ -42,9 +42,10 @@ export default function Timetable(props: {
                 {
                     [...Array(scopeToHour - scopeFromHour)].map((_, i) => {
                         const hour = scopeFromHour + i;
-                        return <div className={"w-full pr-[14px] absolute text-[12px] flex align-middle justify-end text-neutral-400"}
-                                    style={{top: `calc(${100 * (hour - scopeFromHour) / scopeTotalHour}% - 10px)`}}
-                                    key={i}>
+                        return <div
+                            className={"w-full pr-[14px] absolute text-[12px] flex align-middle justify-end text-neutral-400"}
+                            style={{top: `calc(${100 * (hour - scopeFromHour) / scopeTotalHour}% - 10px)`}}
+                            key={i}>
                             {hour == 12 ? "noon" : hour <= 12 ? `${hour} am` : `${hour - 12} pm`}
                         </div>;
                     })
@@ -69,7 +70,7 @@ export default function Timetable(props: {
                     })
                 }
                 {
-                    [...Array(7)].map((_, i) =>
+                    [...Array(6)].map((_, i) =>
                         <div className={"absolute top-[-16px] w-[1px] h-[calc(100%+16px)] bg-neutral-300"}
                              key={-i * 3 - 2}
                              style={{

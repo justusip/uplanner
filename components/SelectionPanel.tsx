@@ -1,10 +1,9 @@
 import React from "react";
-import Course from "./Course";
-import CourseSelection from "./CourseSelection";
+import Course from "../types/Course";
+import CourseSelection from "../types/CourseSelection";
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
-import {BsSearch} from "react-icons/bs";
 import SelectionCard from "./SelectionCard";
-import cx from "classnames";
+import CourseAddPanel from "./CourseAddPanel";
 
 export default function SelectionPanel(props: {
     courseCatalog: Course[],
@@ -12,9 +11,7 @@ export default function SelectionPanel(props: {
     setSelections: (sections: CourseSelection[]) => void
 }) {
 
-    const [query, setQuery] = React.useState<string>("");
-
-    const curSem = "2021-22 Sem 2";
+    const [panelShowed, setPanelShowed] = React.useState(false);
 
     const reorder = <T extends unknown>(list: T[], startIndex: number, endIndex: number): T[] => {
         const result = Array.from(list);
@@ -38,44 +35,17 @@ export default function SelectionPanel(props: {
     };
 
     return <div className={"w-[300px] h-full flex flex-col border-l"}>
-        <div className={"selection-searchbox"}>
-            <BsSearch color={"#555"}/>
-            <input className={"selection-searchbox-input"} value={query} onChange={e => setQuery(e.target.value)}
-                   placeholder={"Search a course..."}/>
-        </div>
+        {
+            panelShowed && <CourseAddPanel showed={panelShowed}
+                                           setShowed={setPanelShowed}
+                                           courseCatalog={props.courseCatalog}
+                                           selections={props.selections}
+                                           addSelection={(sel: CourseSelection) => props.setSelections([
+                                               ...props.selections,
+                                               sel
+                                           ])}/>
+        }
         <div className={"h-0 grow overflow-y-scroll relative bg-white bg-opacity-20"}>
-            {
-                query != "" && <div className={"absolute w-full h-full top-0 left-0 bg-white"}>
-                    {
-                        props.courseCatalog
-                            .filter(c => c.code.toLowerCase().startsWith(query.toLowerCase()))
-                            .map((course, i) => {
-                                const disabled = props.selections.find(s => s.code === course.code && s.term === course.term) || course.term != curSem;
-                                return <div key={i}
-                                            className={cx(
-                                                "p-2 border border-b-neutral-300 cursor-pointer hover:bg-neutral-200",
-                                                {"text-neutral-500 hover:bg-inherit cursor-not-allowed": disabled}
-                                            )}
-                                            onClick={() => {
-                                                if (disabled)
-                                                    return;
-                                                props.setSelections([
-                                                    ...props.selections,
-                                                    {
-                                                        code: course.code,
-                                                        term: course.term,
-                                                        sectionName: course.sections[0].sectionName
-                                                    }
-                                                ]);
-                                                setQuery("");
-                                            }}>
-                                    <div className={"course-code"}>{course.code} {course.term}</div>
-                                    <div className={"course-title"}>{course.title}</div>
-                                </div>;
-                            })
-                    }
-                </div>
-            }
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
@@ -109,6 +79,12 @@ export default function SelectionPanel(props: {
                     )}
                 </Droppable>
             </DragDropContext>
+        </div>
+        <div className={"p-2"}>
+            <button className={"border p-2 w-full"}
+                    onClick={() => setPanelShowed(true)}>
+                Add a course...
+            </button>
         </div>
     </div>;
 }
