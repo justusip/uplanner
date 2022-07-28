@@ -4,13 +4,18 @@ import CourseSelection from "../types/CourseSelection";
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import SelectionCard from "./SelectionCard";
 import CourseAddPanel from "./CourseAddPanel";
+import {Button} from "@mui/material";
+import {MdAddCircle} from "react-icons/md";
 
 export default function SelectionPanel(props: {
-    courseCatalog: Course[],
-    selections: CourseSelection[],
-    setSelections: (sections: CourseSelection[]) => void
+    term: string,
+    catalog: Course[],
+    entries: CourseSelection[],
+    setEntries: (selections: CourseSelection[]) => void,
+    setPreview: (subclass: CourseSelection | null) => void
 }) {
 
+    const scopedEntries = React.useMemo(() => props.entries.filter(s => s.term === props.term), [props.entries, props.term]);
     const [panelShowed, setPanelShowed] = React.useState(false);
 
     const reorder = <T extends unknown>(list: T[], startIndex: number, endIndex: number): T[] => {
@@ -26,48 +31,63 @@ export default function SelectionPanel(props: {
             return;
 
         const items = reorder(
-            props.selections,
+            props.entries,
             result.source.index,
             result.destination.index
         );
 
-        props.setSelections(items);
+        props.setEntries(items);
     };
 
-    return <div className={"w-[300px] h-full flex flex-col border-l"}>
+    return <div className={"w-[300px] h-full flex flex-col border-l border-gray-500"}>
         {
             panelShowed && <CourseAddPanel showed={panelShowed}
+                                           term={props.term}
                                            setShowed={setPanelShowed}
-                                           courseCatalog={props.courseCatalog}
-                                           selections={props.selections}
-                                           addSelection={(sel: CourseSelection) => props.setSelections([
-                                               ...props.selections,
+                                           courseCatalog={props.catalog}
+                                           selections={props.entries}
+                                           addSelection={(sel: CourseSelection) => props.setEntries([
+                                               ...props.entries,
                                                sel
                                            ])}/>
         }
-        <div className={"h-0 grow overflow-y-scroll relative bg-white bg-opacity-20"}>
+        <div className={"h-0 grow overflow-y-scroll relative"}>
+            {
+                scopedEntries.length === 0 &&
+                <div
+                    className={"w-full h-full flex flex-col place-items-center place-content-center gap-2 opacity-40"}>
+                    <img src={"moai_1f5ff.png"} width={100} alt={"moai"}/>
+                    <div>未有喺{props.term}新增任何課程</div>
+                </div>
+            }
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <div {...provided.droppableProps}
-                             ref={provided.innerRef}>
+                    {(provided) => (
+                        <div {...provided.droppableProps} ref={provided.innerRef}>
                             {
-                                props.selections.map((sectionSelection, index) => {
-                                        const course = props.courseCatalog.find(c => sectionSelection.code == c.code && sectionSelection.term == c.term)!;
+                                scopedEntries.map((sel, index) => {
+                                        const course = props.catalog.find(c => sel.code == c.code && sel.term == c.term)!;
                                         return <SelectionCard
                                             course={course}
                                             index={index}
                                             key={index}
-                                            sectionName={sectionSelection.sectionName}
-                                            setSection={(section: string | null) => {
-                                                if (!section) {
-                                                    const idx = props.selections.findIndex(selection => course.code == selection.code);
-                                                    const arr = [...props.selections];
+                                            curSubclass={sel.subclass}
+                                            onPreview={(subclass: string | null) => {
+                                                props.setPreview(!subclass ? null : {
+                                                    code: sel.code,
+                                                    term: sel.term,
+                                                    subclass
+                                                });
+                                            }}
+                                            onSelect={(subclass: string | null) => {
+                                                if (!subclass) {
+                                                    const idx = props.entries.findIndex(selection => course.code == selection.code);
+                                                    const arr = [...props.entries];
                                                     arr.splice(idx, 1);
-                                                    props.setSelections(arr);
+                                                    props.setEntries(arr);
                                                 } else {
-                                                    props.setSelections(props.selections.map(selection => course.code == selection.code ?
-                                                        Object.assign({}, selection, {sectionName: section!})
+                                                    props.setEntries(props.entries.map(selection => course.code == selection.code ?
+                                                        Object.assign({}, selection, {subclass: subclass!})
                                                         : selection));
                                                 }
                                             }}/>;
@@ -80,11 +100,9 @@ export default function SelectionPanel(props: {
                 </Droppable>
             </DragDropContext>
         </div>
-        <div className={"p-2"}>
-            <button className={"border p-2 w-full"}
-                    onClick={() => setPanelShowed(true)}>
-                Add a course...
-            </button>
+        <div className={"p-4"}>
+            <Button variant="outlined" onClick={() => setPanelShowed(true)} fullWidth
+                    startIcon={<MdAddCircle/>}>新增課程</Button>
         </div>
     </div>;
 }

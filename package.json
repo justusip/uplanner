@@ -8,10 +8,14 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@emotion/react": "^11.9.3",
+        "@emotion/styled": "^11.9.3",
+        "@mui/material": "^5.9.2",
         "@types/react-beautiful-dnd": "^13.1.2",
         "autoprefixer": "^10.4.2",
         "classnames": "^2.3.1",
         "fuse.js": "^6.5.3",
+        "fuse.js-worker": "^0.1.2",
         "ical-generator": "^3.2.0",
         "moment": "^2.29.1",
         "next": "12.0.7",

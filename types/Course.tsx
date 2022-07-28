@@ -4,8 +4,8 @@ export default interface Course {
     code: string,
     term: string,
     title: string,
-    sections: {
-        sectionName: string,
+    subclass: {
+        name: string,
         times: {
             from: moment.Moment,
             to: moment.Moment,
