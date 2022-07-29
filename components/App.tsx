@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo, useRef} from "react";
 import moment from "moment";
 import CourseSelection from "../types/CourseSelection";
 import SelectionPanel from "../components/SelectionPanel";
@@ -8,12 +8,33 @@ import {FormControl, InputLabel, MenuItem, Select, ToggleButton, ToggleButtonGro
 import {MdOutlineCalendarToday} from "react-icons/md";
 import Lesson from "../types/Lesson";
 import ExportButton from "./ExportButton";
+import Metadata from "../types/Metadata";
+import {Settings} from "../types/Settings";
+import useLocalStorage from "./useLocalStorage";
 
 export default function App(props: {
+    metadata: Metadata,
+    settings: Settings,
+    setSettings: (settings: Settings) => void,
     catalog: Course[]
 }) {
-    const [term, setTerm] = React.useState("Sem 1");
-    const [selections, setSelections] = React.useState<CourseSelection[]>([]);
+    const institutions = useMemo(() => {
+        return props.metadata.institutions.map(o => o.name);
+    }, [props.metadata]);
+    const years = useMemo(() => {
+        return props.metadata.institutions.find(o => o.name === props.settings.institution)!.years.map(o => o.year);
+    }, [props.settings, props.metadata.institutions]);
+
+    const [term, setTerm] = React.useState("s1");
+    const [selections, setSelections] = useLocalStorage<CourseSelection[]>("82041b4d-56b5-4916-b812-6594a8b41786", []);
+    const prevSettings = useRef<Settings | null>();
+    useEffect(() => {
+        const prev = prevSettings.current;
+        const cur = props.settings;
+        if (prev && cur && (prev.year !== cur.year || prev.institution !== cur.institution))
+            setSelections([]);
+        prevSettings.current = props.settings;
+    }, [props.settings]);
     const [preview, setPreview] = React.useState<CourseSelection | null>(null);
 
     const lessons = React.useMemo<Lesson[]>(() => {
@@ -33,27 +54,21 @@ export default function App(props: {
             });
     }, [preview, props.catalog, selections]);
 
-    useEffect(() => {
-        if (localStorage.getItem("sel"))
-            setSelections(JSON.parse(localStorage.getItem("sel")!) as CourseSelection[]);
-    }, []);
-    useEffect(() => {
-        localStorage.setItem("sel", JSON.stringify(selections));
-    }, [selections]);
-
     return <div className={"w-screen h-screen bg-gray-800 flex flex-col text-white"}>
         <div className={"px-4 py-2 border-b border-gray-500 flex gap-4 place-items-center"}>
             <MdOutlineCalendarToday className={"text-2xl"}/>
             <FormControl size={"small"}>
-                <InputLabel>學府</InputLabel>
-                <Select value={0}>
-                    <MenuItem value={0}>香港大學</MenuItem>
+                <InputLabel>學院</InputLabel>
+                <Select value={props.settings.institution}
+                        onChange={e => props.setSettings({...props.settings, institution: e.target.value})}>
+                    {institutions.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}
                 </Select>
             </FormControl>
-            <FormControl size={"small"} disabled>
+            <FormControl size={"small"}>
                 <InputLabel>學年</InputLabel>
-                <Select value={0}>
-                    <MenuItem value={0}>2022-2023</MenuItem>
+                <Select value={props.settings.year}
+                        onChange={e => props.setSettings({...props.settings, year: e.target.value})}>
+                    {years.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}
                 </Select>
             </FormControl>
             <ToggleButtonGroup color="primary"
@@ -68,20 +83,20 @@ export default function App(props: {
                     [
                         {
                             name: "秋/S1",
-                            value: "Sem 1"
+                            value: "s1"
                         },
                         {
                             name: "冬/WS",
-                            value: "Win Sem",
+                            value: "ws",
                             disabled: true
                         },
                         {
                             name: "春/S2",
-                            value: "Sem 2"
+                            value: "s2"
                         },
                         {
                             name: "夏/SS",
-                            value: "Sum Sem"
+                            value: "ss"
                         },
                     ].map((o, i) => <ToggleButton key={i} value={o.value}
                                                   disabled={o.disabled}>{o.name}</ToggleButton>)

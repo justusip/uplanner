@@ -56,7 +56,7 @@ export default function SelectionPanel(props: {
                 scopedEntries.length === 0 &&
                 <div
                     className={"w-full h-full flex flex-col place-items-center place-content-center gap-2 opacity-40"}>
-                    <img src={"moai_1f5ff.png"} width={100} alt={"moai"}/>
+                    <img src={"koala_1f428.png"} width={100} alt={"moai"}/>
                     <div>未有喺{props.term}新增任何課程</div>
                 </div>
             }

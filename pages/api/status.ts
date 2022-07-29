@@ -1,0 +1,25 @@
+import type {NextApiRequest, NextApiResponse} from 'next';
+import Metadata from "../../types/Metadata";
+
+export default function handler(
+    req: NextApiRequest,
+    res: NextApiResponse<Metadata>
+) {
+    res.json({
+        institutions: [
+            {
+                name: "香港大學",
+                years: [
+                    {
+                        year: "2021-2022",
+                        file: "data/hku_2021-2022.json"
+                    },
+                    {
+                        year: "2022-2023",
+                        file: "data/hku_2022-2023.json"
+                    }
+                ]
+            }
+        ]
+    });
+}
