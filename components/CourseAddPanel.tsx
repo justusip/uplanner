@@ -35,7 +35,7 @@ export default function CourseAddPanel(props: {
                            if (e.key == "Escape")
                                props.setShowed(false);
                        }}/>
-        <div className={"w-[600px] h-[400px] overflow-hidden bg-gray-800 flex flex-col border border-gray-500"}
+        <div className={"w-[600px] h-[400px] max-w-full max-h-full overflow-hidden bg-gray-800 flex flex-col border border-gray-500"}
              onClick={e => e.stopPropagation()}>
             <div className={"p-2 flex gap-2 text-sm border-b border-gray-500"}>
                 新增{props.term}課程

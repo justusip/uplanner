@@ -17,8 +17,15 @@ import Course from "../types/Course";
 import Metadata from "../types/Metadata";
 import {Settings} from "../types/Settings";
 import useLocalStorage from "../components/useLocalStorage";
+import IsUsingMobile from "../utils/IsUsingMobile";
 
 const Home: NextPage = () => {
+    useEffect(() => {
+        if (IsUsingMobile()) {
+            alert("建議使用電腦/平板瀏覽呢個網站。用細熒幕瀏覽可能效果會未如理想。");
+        }
+    }, []);
+
     const [metadata, setMetadata] = useState<Metadata | null>(null);
     const [settings, setSettings] = useLocalStorage<Settings | null>("cb4097f8-af60-4d54-9fb9-ca5c0b361a33", null);
     const [toSettings, setToSettings] = useState<Settings | null>(null);
@@ -62,7 +69,7 @@ const Home: NextPage = () => {
         palette: {mode: "dark"}
     })}>
         <CssBaseline/>
-        <div className={"w-screen h-screen min-w-[800px] min-h-[600px]"}>
+        <div className={"w-screen h-screen min-w-[800px] min-h-[600px] relative bg-gray-800 text-white"}>
             <Dialog
                 open={!!toSettings}
                 onClose={() => setToSettings(null)}>
@@ -80,7 +87,7 @@ const Home: NextPage = () => {
             </Dialog>
             {
                 !catalog && <div
-                    className={"w-screen h-screen bg-gray-800 flex flex-col text-white place-items-center place-content-center gap-4 p-16"}>
+                    className={"w-full h-full flex flex-col place-items-center place-content-center gap-4 p-16"}>
                     載入中...
                     <LinearProgress className={"w-full max-w-screen-sm"}/>
                 </div>
