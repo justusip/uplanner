@@ -62,34 +62,36 @@ const Home: NextPage = () => {
         palette: {mode: "dark"}
     })}>
         <CssBaseline/>
-        <Dialog
-            open={!!toSettings}
-            onClose={() => setToSettings(null)}>
-            <DialogTitle id="alert-dialog-title">更改設定</DialogTitle>
-            <DialogContent>
-                <DialogContentText>如果更改學院或學年，你之前新增嘅課程就會被清除。</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => setToSettings(null)}>取消</Button>
-                <Button onClick={() => {
-                    setSettings(toSettings);
-                    setToSettings(null);
-                }} autoFocus>繼續</Button>
-            </DialogActions>
-        </Dialog>
-        {
-            !catalog && <div
-                className={"w-screen h-screen bg-gray-800 flex flex-col text-white place-items-center place-content-center gap-4"}>
-                載入中...
-                <LinearProgress className={"w-full max-w-screen-sm"}/>
-            </div>
-        }
-        {
-            catalog && <App metadata={metadata!}
-                            catalog={catalog!}
-                            settings={settings!}
-                            setSettings={setToSettings}/>
-        }
+        <div className={"w-screen h-screen min-w-[800px] min-h-[600px]"}>
+            <Dialog
+                open={!!toSettings}
+                onClose={() => setToSettings(null)}>
+                <DialogTitle id="alert-dialog-title">更改設定</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>如果更改學院或學年，你之前新增嘅課程就會被清除。</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setToSettings(null)}>取消</Button>
+                    <Button onClick={() => {
+                        setSettings(toSettings);
+                        setToSettings(null);
+                    }} autoFocus>繼續</Button>
+                </DialogActions>
+            </Dialog>
+            {
+                !catalog && <div
+                    className={"w-screen h-screen bg-gray-800 flex flex-col text-white place-items-center place-content-center gap-4 p-16"}>
+                    載入中...
+                    <LinearProgress className={"w-full max-w-screen-sm"}/>
+                </div>
+            }
+            {
+                catalog && <App metadata={metadata!}
+                                catalog={catalog!}
+                                settings={settings!}
+                                setSettings={setToSettings}/>
+            }
+        </div>
     </ThemeProvider>;
 };
 

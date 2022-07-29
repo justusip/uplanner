@@ -54,7 +54,7 @@ export default function App(props: {
             });
     }, [preview, props.catalog, selections]);
 
-    return <div className={"w-screen h-screen bg-gray-800 flex flex-col text-white"}>
+    return <div className={"w-full h-full bg-gray-800 flex flex-col text-white"}>
         <div className={"px-4 py-2 border-b border-gray-500 flex gap-4 place-items-center"}>
             <MdOutlineCalendarToday className={"text-2xl"}/>
             <FormControl size={"small"}>
