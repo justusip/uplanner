@@ -63,16 +63,18 @@ export default function App(props: {
             <MdOutlineCalendarToday className={"text-2xl"}/>
             <FormControl size={"small"}>
                 <InputLabel shrink>大學</InputLabel>
-                <Select value={props.settings?.institution}
+                <Select value={"香港大學"}
                         onChange={e => props.setSettings({...props.settings!, institution: e.target.value})}>
-                    {institutions.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}
+                    {/*{institutions.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}*/}
+                    <MenuItem value={"香港大學"}>{"香港大學"}</MenuItem>
                 </Select>
             </FormControl>
             <FormControl size={"small"}>
                 <InputLabel shrink>學年</InputLabel>
-                <Select notched value={props.settings?.year}
+                <Select notched value={"2022-2023"}
                         onChange={e => props.setSettings({...props.settings!, year: e.target.value})}>
-                    {years.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}
+                    {/*{years.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}*/}
+                    <MenuItem value={"2022-2023"}>{"2022-2023"}</MenuItem>
                 </Select>
             </FormControl>
             <ToggleButtonGroup color="primary"
