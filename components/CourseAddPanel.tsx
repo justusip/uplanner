@@ -5,7 +5,7 @@ import Course from "../types/Course";
 import CourseSelection from "../types/CourseSelection";
 import EventListener from "react-event-listener";
 import {InputBase} from "@mui/material";
-import {MdCheckCircle} from "react-icons/md";
+import {MdCheckCircle, MdClose} from "react-icons/md";
 import TranslateSem from "../utils/TranslateSem";
 
 export default function CourseAddPanel(props: {
@@ -29,18 +29,21 @@ export default function CourseAddPanel(props: {
         return Array.from(combined);
     }, [prettyQuery, scopedCatalog]);
 
-    return <div className={"absolute inset-0 z-10 bg-black/50 flex place-items-center place-content-center"}
-                onClick={() => props.setShowed(false)}>
+    return <div
+        className={"absolute inset-0 z-10 bg-black/50 flex place-items-center place-content-center p-8"}
+        onClick={() => props.setShowed(false)}>
         <EventListener target={"document"}
                        onKeyDown={(e: KeyboardEvent) => {
                            if (e.key === "Escape")
                                props.setShowed(false);
                        }}/>
         <div
-            className={"w-[600px] h-[400px] max-w-full max-h-full overflow-hidden bg-gray-800 flex flex-col border border-gray-500"}
+            className={"w-full h-full max-w-[600px] max-h-[400px] overflow-hidden bg-gray-800 flex flex-col border border-gray-500"}
             onClick={e => e.stopPropagation()}>
-            <div className={"p-2 flex gap-2 text-sm border-b border-gray-500"}>
-                新增{TranslateSem(props.term)}嘅課程
+            <div className={"p-2 flex place-items-center gap-2 text-sm border-b border-gray-500"}>
+                <div className={"flex-1"}>新增{TranslateSem(props.term)}嘅課程</div>
+                <MdClose className={"cursor-pointer hover:opacity-70 active:opacity-50"}
+                         onClick={() => props.setShowed(false)}/>
             </div>
             <div className={"p-2 flex place-items-center gap-4 border-b border-gray-500"}>
                 <BsSearch/>

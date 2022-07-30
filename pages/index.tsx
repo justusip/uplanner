@@ -77,7 +77,7 @@ const Home: NextPage = () => {
                 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5767798753939601"
                 crossOrigin="anonymous"></script>
         <CssBaseline/>
-        <div className={"w-screen h-screen min-w-[800px] min-h-[600px] relative bg-gray-800 text-white"}>
+        <div className={"w-screen h-screen min-w-[800px] min-h-[500px] relative bg-gray-800 text-white"}>
             <Dialog
                 open={!!toSettings}
                 onClose={() => setToSettings(null)}>
