@@ -73,6 +73,9 @@ const Home: NextPage = () => {
             <title>uPlanner</title>
             <meta property="og:title" content="uPlanner" key="title"/>
         </Head>
+        <script async
+                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5767798753939601"
+                crossOrigin="anonymous"></script>
         <CssBaseline/>
         <div className={"w-screen h-screen min-w-[800px] min-h-[600px] relative bg-gray-800 text-white"}>
             <Dialog
