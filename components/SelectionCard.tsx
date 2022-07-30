@@ -8,8 +8,9 @@ export default function SelectionPanel(props: {
     course: Course,
     index: number,
     curSubclass: string,
-    onSelect: (subclass: string | null) => void,
-    onPreview: (subclass: string | null) => void
+    onSelectSubclass: (subclass: string) => void,
+    onRemoveCourse: () => void,
+    onPreviewSubclass: (subclass: string | null) => void,
 }) {
     return <Draggable key={props.course.code} draggableId={props.course.code} index={props.index}>
         {(provided, snapshot) => (
@@ -26,7 +27,7 @@ export default function SelectionPanel(props: {
                     <div className={"flex items-center"}>
                         <div className={"text-sm font-bold grow"}>{props.course.code}</div>
                         <MdClose className={"cursor-pointer hover:opacity-70 active:opacity-50"}
-                                 onClick={() => props.onSelect(null)}/>
+                                 onClick={() => props.onRemoveCourse()}/>
                     </div>
                     <div className={"text-sm"}>{props.course.title}</div>
                 </div>
@@ -39,10 +40,11 @@ export default function SelectionPanel(props: {
                                         {"hover:bg-white/20 active:bg-black/50": props.curSubclass !== section.name},
                                         {"bg-black/30 text-white cursor-default": props.curSubclass === section.name},
                                     )}
-                                    onMouseOver={() => props.onPreview(section.name)}
-                                    onMouseOut={() => props.onPreview(null)}
-                                    onClick={() => props.onSelect(section.name)}
-                            >{section.name}</button>)
+                                    onMouseOver={() => props.onPreviewSubclass(section.name)}
+                                    onMouseOut={() => props.onPreviewSubclass(null)}
+                                    onClick={() => props.onSelectSubclass(section.name)}>
+                                {section.name}
+                            </button>)
                     }
                 </div>
             </div>

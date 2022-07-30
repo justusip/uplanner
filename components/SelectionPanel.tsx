@@ -68,32 +68,31 @@ export default function SelectionPanel(props: {
                         {(provided) => (
                             <div {...provided.droppableProps} ref={provided.innerRef}>
                                 {
-                                    scopedEntries.map((sel, index) => {
-                                            const course = props.catalog.find(c => sel.code == c.code && sel.term == c.term)!;
+                                    scopedEntries.map((entry, index) => {
+                                            const course = props.catalog.find(o => entry.code === o.code && entry.term === o.term)!;
                                             return <SelectionCard
                                                 course={course}
                                                 index={index}
                                                 key={index}
-                                                curSubclass={sel.subclass}
-                                                onPreview={(subclass: string | null) => {
+                                                curSubclass={entry.subclass}
+                                                onSelectSubclass={(subclass: string) => {
+                                                    props.setEntries(props.entries.map(o => course.code === o.code && course.term === o.term ?
+                                                        Object.assign({}, o, {subclass: subclass!}) : o));
+                                                }}
+                                                onRemoveCourse={() => {
+                                                    const idx = props.entries.findIndex(o => course.code === o.code && course.term === o.term);
+                                                    const arr = [...props.entries];
+                                                    arr.splice(idx, 1);
+                                                    props.setEntries(arr);
+                                                }}
+                                                onPreviewSubclass={(subclass: string | null) => {
                                                     props.setPreview(!subclass ? null : {
-                                                        code: sel.code,
-                                                        term: sel.term,
+                                                        code: entry.code,
+                                                        term: entry.term,
                                                         subclass
                                                     });
                                                 }}
-                                                onSelect={(subclass: string | null) => {
-                                                    if (!subclass) {
-                                                        const idx = props.entries.findIndex(selection => course.code == selection.code);
-                                                        const arr = [...props.entries];
-                                                        arr.splice(idx, 1);
-                                                        props.setEntries(arr);
-                                                    } else {
-                                                        props.setEntries(props.entries.map(selection => course.code == selection.code ?
-                                                            Object.assign({}, selection, {subclass: subclass!})
-                                                            : selection));
-                                                    }
-                                                }}/>;
+                                            />;
                                         }
                                     )
                                 }

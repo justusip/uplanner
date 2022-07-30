@@ -15,7 +15,7 @@ export default function Timetable(props: {
             const recurringLessons: RecurringLesson[] = [];
             nextLesson: for (const lesson of scopedLessons) {
                 for (const o of recurringLessons) {
-                    if (lesson.code === o.code && lesson.subclass === o.subclass &&
+                    if (lesson.code === o.code && lesson.term === lesson.term && lesson.subclass === o.subclass &&
                         o.from.sameAs(lesson.from) && o.to.sameAs(lesson.to)) {
                         if (!o.venue.includes(lesson.venue))
                             o.venue.push(lesson.venue);
@@ -77,7 +77,7 @@ export default function Timetable(props: {
                         return <div key={i}
                                     className={"w-full pr-[14px] absolute text-[12px] flex align-middle justify-end text-neutral-400"}
                                     style={{top: `calc(${100 * (hour - scopeFromHour) / scopeTotalHour}% - 10px)`}}>
-                            {hour == 12 ? "noon" : hour <= 12 ? `${hour} am` : `${hour - 12} pm`}
+                            {hour === 12 ? "noon" : hour <= 12 ? `${hour} am` : `${hour - 12} pm`}
                         </div>;
                     })
                 }
@@ -119,7 +119,7 @@ export default function Timetable(props: {
                         return <div key={i}
                                     className={cx("absolute bg-opacity-20 border-l-2 p-1 pl-2 overflow-hidden",
                                         {"bg-sky-500 border-sky-500 text-sky-500": !e.isPreview && !e.isConflict},
-                                        {"bg-amber-500 border-amber-500 text-amber-500": !e.isPreview && e.isConflict},
+                                        {"bg-rose-500 border-rose-500 text-rose-500": !e.isPreview && e.isConflict},
                                         {"bg-neutral-500 border-neutral-500 text-neutral-500": e.isPreview}
                                     )}
                                     style={{
@@ -130,6 +130,7 @@ export default function Timetable(props: {
                                     }}>
                             <div className={"flex gap-x-1 gap-y-0.5 place-items-center flex-wrap"}>
                                 <div className={"text-sm font-bold"}>{e.code}</div>
+                                <div className={"text-sm font-bold"}>{e.subclass}</div>
                                 <div className={"text-xs font-bold"}>{e.venue.join(",")}</div>
                             </div>
                             <div className={"text-xs"}>{e.title}</div>

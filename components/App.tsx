@@ -45,7 +45,7 @@ export default function App(props: {
         return [...selections, preview]
             .filter(o => !!o)
             .flatMap(entry => {
-                const course = props.catalog!.find(o => entry!.code == o.code && entry!.term == o.term)!;
+                const course = props.catalog!.find(o => entry!.code === o.code && entry!.term === o.term)!;
                 const subclass = course.subclass.find(o => entry!.subclass === o.name)!;
                 return subclass.times.map(lesson => ({
                     ...entry,

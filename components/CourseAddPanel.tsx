@@ -33,7 +33,7 @@ export default function CourseAddPanel(props: {
                 onClick={() => props.setShowed(false)}>
         <EventListener target={"document"}
                        onKeyDown={(e: KeyboardEvent) => {
-                           if (e.key == "Escape")
+                           if (e.key === "Escape")
                                props.setShowed(false);
                        }}/>
         <div
