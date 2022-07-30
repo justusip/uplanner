@@ -6,24 +6,27 @@ import SelectionCard from "./SelectionCard";
 import CourseAddPanel from "./CourseAddPanel";
 import {Button} from "@mui/material";
 import {MdAddCircle} from "react-icons/md";
+import TranslateSem from "../utils/TranslateSem";
 
 export default function SelectionPanel(props: {
     term: string,
     catalog: Course[],
     entries: CourseSelection[],
-    setEntries: (selections: CourseSelection[]) => void,
+    setEntries: (entries: CourseSelection[]) => void,
     setPreview: (subclass: CourseSelection | null) => void
 }) {
 
     const scopedEntries = React.useMemo(() => props.entries.filter(s => s.term === props.term), [props.entries, props.term]);
     const [panelShowed, setPanelShowed] = React.useState(false);
 
-    const reorder = <T extends unknown>(list: T[], startIndex: number, endIndex: number): T[] => {
-        const result = Array.from(list);
-        const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
+    const reorder = (list: CourseSelection[], sourceIdx: number, destinationIdx: number): CourseSelection[] => {
+        const thisTermSelections = list.filter(o => o.term === props.term);
+        const otherTermSelections = list.filter(o => o.term !== props.term);
 
-        return result;
+        const [removed] = thisTermSelections.splice(sourceIdx, 1);
+        thisTermSelections.splice(destinationIdx, 0, removed);
+
+        return [...thisTermSelections, ...otherTermSelections];
     };
 
     const onDragEnd = (result: DropResult) => {
@@ -54,55 +57,56 @@ export default function SelectionPanel(props: {
         <div className={"h-0 grow overflow-y-scroll relative"}>
             {
                 scopedEntries.length === 0 &&
-                <div
-                    className={"w-full h-full flex flex-col place-items-center place-content-center gap-2 opacity-40"}>
-                    <img src={"koala_1f428.png"} width={100} alt={"moai"}/>
-                    <div>未有喺{props.term}新增任何課程</div>
+                <div className={"w-full h-full flex flex-col place-items-center place-content-center gap-2 opacity-40"}>
+                    <img src={"koala_1f428.png"} width={100} alt={"koala"}/>
+                    <div>未有新增任何{TranslateSem(props.term)}嘅課程</div>
                 </div>
             }
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="droppable">
-                    {(provided) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef}>
-                            {
-                                scopedEntries.map((sel, index) => {
-                                        const course = props.catalog.find(c => sel.code == c.code && sel.term == c.term)!;
-                                        return <SelectionCard
-                                            course={course}
-                                            index={index}
-                                            key={index}
-                                            curSubclass={sel.subclass}
-                                            onPreview={(subclass: string | null) => {
-                                                props.setPreview(!subclass ? null : {
-                                                    code: sel.code,
-                                                    term: sel.term,
-                                                    subclass
-                                                });
-                                            }}
-                                            onSelect={(subclass: string | null) => {
-                                                if (!subclass) {
-                                                    const idx = props.entries.findIndex(selection => course.code == selection.code);
-                                                    const arr = [...props.entries];
-                                                    arr.splice(idx, 1);
-                                                    props.setEntries(arr);
-                                                } else {
-                                                    props.setEntries(props.entries.map(selection => course.code == selection.code ?
-                                                        Object.assign({}, selection, {subclass: subclass!})
-                                                        : selection));
-                                                }
-                                            }}/>;
-                                    }
-                                )
-                            }
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
+            {
+                props.catalog && <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="droppable">
+                        {(provided) => (
+                            <div {...provided.droppableProps} ref={provided.innerRef}>
+                                {
+                                    scopedEntries.map((sel, index) => {
+                                            const course = props.catalog.find(c => sel.code == c.code && sel.term == c.term)!;
+                                            return <SelectionCard
+                                                course={course}
+                                                index={index}
+                                                key={index}
+                                                curSubclass={sel.subclass}
+                                                onPreview={(subclass: string | null) => {
+                                                    props.setPreview(!subclass ? null : {
+                                                        code: sel.code,
+                                                        term: sel.term,
+                                                        subclass
+                                                    });
+                                                }}
+                                                onSelect={(subclass: string | null) => {
+                                                    if (!subclass) {
+                                                        const idx = props.entries.findIndex(selection => course.code == selection.code);
+                                                        const arr = [...props.entries];
+                                                        arr.splice(idx, 1);
+                                                        props.setEntries(arr);
+                                                    } else {
+                                                        props.setEntries(props.entries.map(selection => course.code == selection.code ?
+                                                            Object.assign({}, selection, {subclass: subclass!})
+                                                            : selection));
+                                                    }
+                                                }}/>;
+                                        }
+                                    )
+                                }
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            }
         </div>
         <div className={"p-4"}>
             <Button variant="outlined" onClick={() => setPanelShowed(true)} fullWidth
-                    startIcon={<MdAddCircle/>}>新增課程</Button>
+                    startIcon={<MdAddCircle/>}>新增{TranslateSem(props.term)}嘅課程</Button>
         </div>
     </div>;
 }

@@ -13,17 +13,19 @@ import {Settings} from "../types/Settings";
 import useLocalStorage from "./useLocalStorage";
 
 export default function App(props: {
-    metadata: Metadata,
-    settings: Settings,
+    metadata: Metadata | null,
+    settings: Settings | null,
     setSettings: (settings: Settings) => void,
-    catalog: Course[]
+    catalog: Course[] | null
 }) {
     const institutions = useMemo(() => {
+        if (!props.metadata) return [];
         return props.metadata.institutions.map(o => o.name);
     }, [props.metadata]);
     const years = useMemo(() => {
-        return props.metadata.institutions.find(o => o.name === props.settings.institution)!.years.map(o => o.year);
-    }, [props.settings, props.metadata.institutions]);
+        if (!props.metadata || !props.settings) return [];
+        return props.metadata.institutions.find(o => o.name === props.settings!.institution)!.years.map(o => o.year);
+    }, [props.settings, props.metadata]);
 
     const [term, setTerm] = React.useState("s1");
     const [selections, setSelections] = useLocalStorage<CourseSelection[]>("82041b4d-56b5-4916-b812-6594a8b41786", []);
@@ -38,10 +40,12 @@ export default function App(props: {
     const [preview, setPreview] = React.useState<CourseSelection | null>(null);
 
     const lessons = React.useMemo<Lesson[]>(() => {
+        if (!props.catalog)
+            return [];
         return [...selections, preview]
             .filter(o => !!o)
             .flatMap(entry => {
-                const course = props.catalog.find(o => entry!.code == o.code && entry!.term == o.term)!;
+                const course = props.catalog!.find(o => entry!.code == o.code && entry!.term == o.term)!;
                 const subclass = course.subclass.find(o => entry!.subclass === o.name)!;
                 return subclass.times.map(lesson => ({
                     ...entry,
@@ -58,16 +62,16 @@ export default function App(props: {
         <div className={"px-4 py-2 border-b border-gray-500 flex gap-4 place-items-center"}>
             <MdOutlineCalendarToday className={"text-2xl"}/>
             <FormControl size={"small"}>
-                <InputLabel>學院</InputLabel>
-                <Select value={props.settings.institution}
-                        onChange={e => props.setSettings({...props.settings, institution: e.target.value})}>
+                <InputLabel shrink>大學</InputLabel>
+                <Select value={props.settings?.institution}
+                        onChange={e => props.setSettings({...props.settings!, institution: e.target.value})}>
                     {institutions.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}
                 </Select>
             </FormControl>
             <FormControl size={"small"}>
-                <InputLabel>學年</InputLabel>
-                <Select value={props.settings.year}
-                        onChange={e => props.setSettings({...props.settings, year: e.target.value})}>
+                <InputLabel shrink>學年</InputLabel>
+                <Select notched value={props.settings?.year}
+                        onChange={e => props.setSettings({...props.settings!, year: e.target.value})}>
                     {years.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}
                 </Select>
             </FormControl>
@@ -82,24 +86,24 @@ export default function App(props: {
                 {
                     [
                         {
-                            name: "秋/S1",
+                            name: "SEM 1",
                             value: "s1"
                         },
+                        // {
+                        //     name: "WIN SEM",
+                        //     value: "ws",
+                        //     disabled: true
+                        // },
                         {
-                            name: "冬/WS",
-                            value: "ws",
-                            disabled: true
-                        },
-                        {
-                            name: "春/S2",
+                            name: "SEM 2",
                             value: "s2"
                         },
                         {
-                            name: "夏/SS",
+                            name: "Sum Sem",
                             value: "ss"
                         },
                     ].map((o, i) => <ToggleButton key={i} value={o.value}
-                                                  disabled={o.disabled}>{o.name}</ToggleButton>)
+                                                  disabled={false}>{o.name}</ToggleButton>)
                 }
             </ToggleButtonGroup>
             <ExportButton lessons={lessons}/>

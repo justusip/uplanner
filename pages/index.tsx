@@ -83,7 +83,7 @@ const Home: NextPage = () => {
                 onClose={() => setToSettings(null)}>
                 <DialogTitle>更改設定</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>如果更改學院或學年，你之前新增嘅課程就會被清除。</DialogContentText>
+                    <DialogContentText>如果更改大學或學年，你之前新增嘅課程就會被清除。</DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setToSettings(null)}>取消</Button>
@@ -95,16 +95,16 @@ const Home: NextPage = () => {
             </Dialog>
             {
                 !catalog && <div
-                    className={"w-full h-full flex flex-col place-items-center place-content-center gap-4 p-16"}>
+                    className={"absolute inset-0 z-20 flex flex-col place-items-center place-content-center gap-4 p-16 bg-black/50"}>
                     載入中...
                     <LinearProgress className={"w-full max-w-screen-sm"}/>
                 </div>
             }
             {
-                catalog && <App metadata={metadata!}
-                                catalog={catalog!}
-                                settings={settings!}
-                                setSettings={setToSettings}/>
+                <App metadata={metadata!}
+                     catalog={catalog!}
+                     settings={settings!}
+                     setSettings={setToSettings}/>
             }
         </div>
     </ThemeProvider>;

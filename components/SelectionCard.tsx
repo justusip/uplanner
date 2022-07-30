@@ -25,7 +25,7 @@ export default function SelectionPanel(props: {
                 <div>
                     <div className={"flex items-center"}>
                         <div className={"text-sm font-bold grow"}>{props.course.code}</div>
-                        <MdClose className={"cursor-pointer hover:opacity -70"}
+                        <MdClose className={"cursor-pointer hover:opacity-70 active:opacity-50"}
                                  onClick={() => props.onSelect(null)}/>
                     </div>
                     <div className={"text-sm"}>{props.course.title}</div>

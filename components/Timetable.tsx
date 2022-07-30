@@ -128,11 +128,11 @@ export default function Timetable(props: {
                                         width: `${100 / weekdaysShown}%`,
                                         height: `${(scaledTo - scaledFrom) * 100}%`,
                                     }}>
-                            <div className={"flex gap-1 place-items-center flex-wrap"}>
+                            <div className={"flex gap-x-1 gap-y-0.5 place-items-center flex-wrap"}>
                                 <div className={"text-sm font-bold"}>{e.code}</div>
                                 <div className={"text-xs font-bold"}>{e.venue.join(",")}</div>
-                            <div className={"text-xs"}>{e.title}</div>
                             </div>
+                            <div className={"text-xs"}>{e.title}</div>
                         </div>;
                     })
                 }

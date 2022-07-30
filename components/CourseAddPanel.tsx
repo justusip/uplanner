@@ -6,6 +6,7 @@ import CourseSelection from "../types/CourseSelection";
 import EventListener from "react-event-listener";
 import {InputBase} from "@mui/material";
 import {MdCheckCircle} from "react-icons/md";
+import TranslateSem from "../utils/TranslateSem";
 
 export default function CourseAddPanel(props: {
     term: string,
@@ -35,10 +36,11 @@ export default function CourseAddPanel(props: {
                            if (e.key == "Escape")
                                props.setShowed(false);
                        }}/>
-        <div className={"w-[600px] h-[400px] max-w-full max-h-full overflow-hidden bg-gray-800 flex flex-col border border-gray-500"}
-             onClick={e => e.stopPropagation()}>
+        <div
+            className={"w-[600px] h-[400px] max-w-full max-h-full overflow-hidden bg-gray-800 flex flex-col border border-gray-500"}
+            onClick={e => e.stopPropagation()}>
             <div className={"p-2 flex gap-2 text-sm border-b border-gray-500"}>
-                新增{props.term}課程
+                新增{TranslateSem(props.term)}嘅課程
             </div>
             <div className={"p-2 flex place-items-center gap-4 border-b border-gray-500"}>
                 <BsSearch/>
@@ -69,7 +71,7 @@ export default function CourseAddPanel(props: {
                         const disabled = !(thisSem && !selected);
                         return <button key={i}
                                        className={cx(
-                                           "w-full flex flex-col p-2 cursor-pointer hover:bg-white/10 active:bg-black/10",
+                                           "w-full flex flex-col p-2 cursor-pointer hover:bg-white/10 active:bg-black/10 text-left",
                                            {"opacity-30 hover:bg-inherit cursor-not-allowed": disabled}
                                        )}
                                        onClick={() => {
@@ -83,11 +85,11 @@ export default function CourseAddPanel(props: {
                                            setQuery("");
                                            props.setShowed(false);
                                        }}>
-                            <div className={"course-code flex place-items-center"}>
+                            <div className={"flex place-items-center"}>
                                 {course.code}
                                 <span className={cx(
                                     "bg-gray-600 text-xs px-[4px] py-[2px] rounded mx-1",
-                                )}>{course.term}</span>
+                                )}>{TranslateSem(course.term)}</span>
                                 {
                                     selected &&
                                     <span
