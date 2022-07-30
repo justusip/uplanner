@@ -18,6 +18,7 @@ import Metadata from "../types/Metadata";
 import {Settings} from "../types/Settings";
 import useLocalStorage from "../components/useLocalStorage";
 import IsUsingMobile from "../utils/IsUsingMobile";
+import Head from "next/head";
 
 const Home: NextPage = () => {
     useEffect(() => {
@@ -68,12 +69,16 @@ const Home: NextPage = () => {
     return <ThemeProvider theme={createTheme({
         palette: {mode: "dark"}
     })}>
+        <Head>
+            <title>uPlanner</title>
+            <meta property="og:title" content="uPlanner" key="title"/>
+        </Head>
         <CssBaseline/>
         <div className={"w-screen h-screen min-w-[800px] min-h-[600px] relative bg-gray-800 text-white"}>
             <Dialog
                 open={!!toSettings}
                 onClose={() => setToSettings(null)}>
-                <DialogTitle id="alert-dialog-title">更改設定</DialogTitle>
+                <DialogTitle>更改設定</DialogTitle>
                 <DialogContent>
                     <DialogContentText>如果更改學院或學年，你之前新增嘅課程就會被清除。</DialogContentText>
                 </DialogContent>
