@@ -5,7 +5,7 @@ import Course from "../types/Course";
 import CourseSelection from "../types/CourseSelection";
 import EventListener from "react-event-listener";
 import {InputBase} from "@mui/material";
-import {MdCheckCircle, MdClose} from "react-icons/md";
+import {MdCheckCircle, MdClose, MdWarning} from "react-icons/md";
 import TranslateSem from "../utils/TranslateSem";
 
 export default function CourseAddPanel(props: {
@@ -104,6 +104,7 @@ export default function CourseAddPanel(props: {
                     })
                 }
             </div>
+            <div className={"flex place-items-center gap-2 border-t border-gray-500 p-2 text-white/50 text-sm"}><MdCheckCircle/>課程資料已經更新至2/8/2022。</div>
         </div>
     </div>;
 }

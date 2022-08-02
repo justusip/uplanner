@@ -103,7 +103,7 @@ export default function SelectionPanel(props: {
                 </DragDropContext>
             }
         </div>
-        <div className={"p-4"}>
+        <div className={"p-4 border-t border-gray-500"}>
             <Button variant="outlined" onClick={() => setPanelShowed(true)} fullWidth
                     startIcon={<MdAddCircle/>}>新增{TranslateSem(props.term)}嘅課程</Button>
         </div>
