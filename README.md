@@ -1,4 +1,4 @@
-## UPlanner
+## uPlanner
 
 <img src="docs/screenshot-1.png" alt="Screenshot">
 <img src="docs/screenshot-2.png" alt="Screenshot">
