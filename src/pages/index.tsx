@@ -72,6 +72,7 @@ const Home: NextPage = () => {
         <Head>
             <title>uPlanner</title>
             <meta property="og:title" content="uPlanner" key="title"/>
+            <meta property="og:image" content="/preview.png" key="ogimage" />
         </Head>
         <script async
                 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5767798753939601"
