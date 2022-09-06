@@ -28,7 +28,7 @@ export default function ExportButton(props: {
         });
         for (const lesson of props.lessons) {
             calendar.createEvent({
-                summary: `${lesson.code} ${lesson.term} - ${lesson.venue}`,
+                summary: `${lesson.code} ${lesson.subclass} - ${lesson.venue}`,
                 description: lesson.title,
                 start: lesson.from,
                 end: lesson.to,
