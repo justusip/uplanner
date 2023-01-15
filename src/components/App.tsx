@@ -5,13 +5,11 @@ import SelectionPanel from "../components/SelectionPanel";
 import Timetable from "../components/Timetable";
 import Course from "../types/Course";
 import {FormControl, InputLabel, MenuItem, Select, ToggleButton, ToggleButtonGroup} from "@mui/material";
-import {MdCheckCircle, MdClose, MdOutlineCalendarToday, MdWarning} from "react-icons/md";
+import {MdClose, MdWarning} from "react-icons/md";
 import Lesson from "../types/Lesson";
 import ExportButton from "./ExportButton";
 import Metadata from "../types/Metadata";
 import {Settings} from "../types/Settings";
-import useLocalStorage from "./useLocalStorage";
-import TranslateSem from "../utils/TranslateSem";
 
 export default function App(props: {
     metadata: Metadata | null,
@@ -28,7 +26,7 @@ export default function App(props: {
         return props.metadata.institutions.find(o => o.name === props.settings!.institution)!.years.map(o => o.year);
     }, [props.settings, props.metadata]);
 
-    const [term, setTerm] = React.useState("s1");
+    const [term, setTerm] = React.useState("s2");
 
     const [selections, setSelections] = useState<CourseSelection[]>([]);
     const selStorageKey = "82041b4d-56b5-4916-b812-6594a8b41786";
@@ -94,16 +92,20 @@ export default function App(props: {
     const [warnShowed, setWarnShowed] = useState(true);
 
     return <div className={"w-full h-full flex flex-col"}>
-        <div className={"px-4 py-2 border-b border-gray-500 flex gap-4 place-items-center"}>
-            <MdOutlineCalendarToday className={"text-2xl"}/>
-            <FormControl size={"small"}>
-                <InputLabel shrink>大學</InputLabel>
-                <Select value={"香港大學"}
-                        onChange={e => props.setSettings({...props.settings!, institution: e.target.value})}>
-                    {/*{institutions.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}*/}
-                    <MenuItem value={"香港大學"}>{"香港大學"}</MenuItem>
-                </Select>
-            </FormControl>
+        <div className={"px-4 py-2 border-b border-gray-500 flex gap-2 place-items-center"}>
+            <img src={"/favicon.ico"} className={"object-cover"} width={32} height={32}/>
+            <div className={"flex flex-col mr-2"}>
+                <div className={"font-bold text-sm"}>uPlanner</div>
+                <div className={"text-xs"}>香港大學reg科工具</div>
+            </div>
+            {/*<FormControl size={"small"}>*/}
+            {/*    <InputLabel shrink>大學</InputLabel>*/}
+            {/*    <Select value={"香港大學"}*/}
+            {/*            onChange={e => props.setSettings({...props.settings!, institution: e.target.value})}>*/}
+            {/*        /!*{institutions.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}*!/*/}
+            {/*        <MenuItem value={"香港大學"}>{"香港大學"}</MenuItem>*/}
+            {/*    </Select>*/}
+            {/*</FormControl>*/}
             <FormControl size={"small"}>
                 <InputLabel shrink>學年</InputLabel>
                 <Select notched value={"2022-2023"}
@@ -144,11 +146,12 @@ export default function App(props: {
                 }
             </ToggleButtonGroup>
             <ExportButton lessons={lessons}/>
+            {/*<AboutButton/>*/}
         </div>
         {
             warnShowed &&
             <div className={"flex place-items-center gap-2 border-b border-gray-500 p-2 text-sm place-content-center"}>
-                <MdWarning/>課程資料只供參考。最新資料請瀏覽HKUPortal。
+                <MdWarning/>課程資料只供參考，最新資料請瀏覽HKUPortal。課程資料已經更新至15/1/2023。
                 <MdClose className={"cursor-pointer hover:opacity-70 active:opacity-50 ml-auto"}
                          onClick={() => setWarnShowed(false)}/>
             </div>

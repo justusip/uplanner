@@ -37,5 +37,9 @@ export default function ExportButton(props: {
         saveFile(`generated-timetable-${moment().format("YYYYMMDD-HHmmss")}.ics`, calendar.toString());
     };
 
-    return <Button variant="outlined" onClick={() => downloadICS()} startIcon={<MdDownload/>}>下載ics檔</Button>;
+    return <Button variant="outlined"
+                   onClick={() => downloadICS()}
+                   startIcon={<MdDownload/>}>
+        下載ics檔
+    </Button>;
 }
