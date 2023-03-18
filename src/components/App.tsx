@@ -10,6 +10,7 @@ import Lesson from "../types/Lesson";
 import ExportButton from "./ExportButton";
 import Metadata from "../types/Metadata";
 import {Settings} from "../types/Settings";
+import AboutButton from "./AboutButton";
 
 export default function App(props: {
     metadata: Metadata | null,
@@ -94,9 +95,8 @@ export default function App(props: {
     return <div className={"w-full h-full flex flex-col"}>
         <div className={"px-4 py-2 border-b border-gray-500 flex gap-2 place-items-center"}>
             <img src={"/favicon.ico"} className={"object-cover"} width={32} height={32}/>
-            <div className={"flex flex-col mr-2"}>
-                <div className={"font-bold text-sm"}>uPlanner</div>
-                <div className={"text-xs"}>香港大學reg科工具</div>
+            <div className={"flex"}>
+                <div className={"font-bold"}>hku</div>Planner
             </div>
             {/*<FormControl size={"small"}>*/}
             {/*    <InputLabel shrink>大學</InputLabel>*/}
@@ -146,7 +146,7 @@ export default function App(props: {
                 }
             </ToggleButtonGroup>
             <ExportButton lessons={lessons}/>
-            {/*<AboutButton/>*/}
+            <AboutButton/>
         </div>
         {
             warnShowed &&
