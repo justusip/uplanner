@@ -146,7 +146,7 @@ export default function App(props: {
                 }
             </ToggleButtonGroup>
             <ExportButton lessons={lessons}/>
-            <AboutButton/>
+            {/*<AboutButton/>*/}
         </div>
         {
             warnShowed &&
