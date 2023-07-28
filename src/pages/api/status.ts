@@ -13,6 +13,10 @@ export default function handler(
                     {
                         year: "2022-2023",
                         file: "data/hku_2022-2023.json"
+                    },
+                    {
+                        year: "2023-2024",
+                        file: "data/hku_2023-2024.json"
                     }
                 ]
             }

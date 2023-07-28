@@ -1,5 +1,3 @@
-import EventListener from "react-event-listener";
-import TranslateSem from "../utils/TranslateSem";
 import {MdClose} from "react-icons/md";
 import React from "react";
 import cx from "classnames";
@@ -12,16 +10,21 @@ export default function Popup(props: React.PropsWithChildren<{
     fixed?: boolean
 }>) {
 
+    React.useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            if (e.key === "Escape")
+                props.setShowed(false);
+        };
+        window.addEventListener("keydown", handler);
+        return () => {
+            window.removeEventListener("keydown", handler);
+        };
+    }, []);
     return <>
         {
             props.showed &&
             <div className={"absolute inset-0 z-10 bg-black/50 flex place-items-center place-content-center p-8"}
                  onClick={() => props.setShowed(false)}>
-                <EventListener target={"document"}
-                               onKeyDown={(e: KeyboardEvent) => {
-                                   if (e.key === "Escape")
-                                       props.setShowed(false);
-                               }}/>
                 <div
                     className={cx(
                         "w-full max-w-[600px] overflow-hidden bg-gray-800 flex flex-col border border-gray-500",

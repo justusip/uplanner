@@ -54,8 +54,9 @@ const Home: NextPage = () => {
                 const file = metadata!
                     .institutions
                     .find(o => o.name === settings.institution)!
-                    .years
-                    .find(o => o.year === settings.year)!.file;
+                    .years[1]
+                    // .find(o => o.year === settings.year)!
+                    .file;
                 const res = await fetch(file);
                 const resJson = await res.json();
                 setCatalog(resJson);
@@ -72,7 +73,7 @@ const Home: NextPage = () => {
         <Head>
             <title>uPlanner</title>
             <meta property="og:title" content="uPlanner" key="title"/>
-            <meta property="og:image" content="/preview.png" key="ogimage" />
+            <meta property="og:image" content="/preview.png" key="ogimage"/>
         </Head>
         <script async
                 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5767798753939601"

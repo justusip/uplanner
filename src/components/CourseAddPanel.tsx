@@ -3,9 +3,8 @@ import React, {useMemo, useState} from "react";
 import cx from "classnames";
 import Course from "../types/Course";
 import CourseSelection from "../types/CourseSelection";
-import EventListener from "react-event-listener";
 import {InputBase} from "@mui/material";
-import {MdCheckCircle, MdClose, MdWarning} from "react-icons/md";
+import {MdCheckCircle} from "react-icons/md";
 import TranslateSem from "../utils/TranslateSem";
 import Popup from "./Popup";
 
@@ -94,7 +93,7 @@ export default function CourseAddPanel(props: {
             }
         </div>
         <div className={"flex place-items-center gap-2 border-t border-gray-500 p-2 text-white/50 text-sm"}>
-            <MdCheckCircle/>課程資料已經更新至15/1/2023。
+            <MdCheckCircle/>課程資料已經更新至29/7/2023。
         </div>
     </Popup>;
 }

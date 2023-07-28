@@ -10,7 +10,6 @@ import Lesson from "../types/Lesson";
 import ExportButton from "./ExportButton";
 import Metadata from "../types/Metadata";
 import {Settings} from "../types/Settings";
-import AboutButton from "./AboutButton";
 
 export default function App(props: {
     metadata: Metadata | null,
@@ -27,7 +26,7 @@ export default function App(props: {
         return props.metadata.institutions.find(o => o.name === props.settings!.institution)!.years.map(o => o.year);
     }, [props.settings, props.metadata]);
 
-    const [term, setTerm] = React.useState("s2");
+    const [term, setTerm] = React.useState("s1");
 
     const [selections, setSelections] = useState<CourseSelection[]>([]);
     const selStorageKey = "82041b4d-56b5-4916-b812-6594a8b41786";
@@ -96,7 +95,8 @@ export default function App(props: {
         <div className={"px-4 py-2 border-b border-gray-500 flex gap-2 place-items-center"}>
             <img src={"/favicon.ico"} className={"object-cover"} width={32} height={32}/>
             <div className={"flex"}>
-                <div className={"font-bold"}>hku</div>Planner
+                <div className={"font-bold"}>hku</div>
+                Planner
             </div>
             {/*<FormControl size={"small"}>*/}
             {/*    <InputLabel shrink>大學</InputLabel>*/}
@@ -108,10 +108,10 @@ export default function App(props: {
             {/*</FormControl>*/}
             <FormControl size={"small"}>
                 <InputLabel shrink>學年</InputLabel>
-                <Select notched value={"2022-2023"}
+                <Select notched value={"2023-2024"}
                         onChange={e => props.setSettings({...props.settings!, year: e.target.value})}>
                     {/*{years.map((o, i) => <MenuItem key={i} value={o}>{o}</MenuItem>)}*/}
-                    <MenuItem value={"2022-2023"}>{"2022-2023"}</MenuItem>
+                    <MenuItem value={"2023-2024"}>{"2023-2024"}</MenuItem>
                 </Select>
             </FormControl>
             <ToggleButtonGroup color="primary"
@@ -151,7 +151,7 @@ export default function App(props: {
         {
             warnShowed &&
             <div className={"flex place-items-center gap-2 border-b border-gray-500 p-2 text-sm place-content-center"}>
-                <MdWarning/>課程資料只供參考，最新資料請瀏覽HKUPortal。課程資料已經更新至15/1/2023。
+                <MdWarning/>課程資料只供參考，最新資料請瀏覽HKUPortal。課程資料已經更新至29/7/2023。
                 <MdClose className={"cursor-pointer hover:opacity-70 active:opacity-50 ml-auto"}
                          onClick={() => setWarnShowed(false)}/>
             </div>
