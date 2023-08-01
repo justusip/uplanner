@@ -151,7 +151,7 @@ export default function App(props: {
         {
             warnShowed &&
             <div className={"flex place-items-center gap-2 border-b border-gray-500 p-2 text-sm place-content-center"}>
-                <MdWarning/>課程資料只供參考，最新資料請瀏覽HKUPortal。課程資料已經更新至29/7/2023。
+                <MdWarning/>課程資料只供參考，最新資料請瀏覽HKUPortal。課程資料已經更新至2/8/2023。
                 <MdClose className={"cursor-pointer hover:opacity-70 active:opacity-50 ml-auto"}
                          onClick={() => setWarnShowed(false)}/>
             </div>

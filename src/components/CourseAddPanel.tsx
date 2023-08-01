@@ -93,7 +93,7 @@ export default function CourseAddPanel(props: {
             }
         </div>
         <div className={"flex place-items-center gap-2 border-t border-gray-500 p-2 text-white/50 text-sm"}>
-            <MdCheckCircle/>課程資料已經更新至29/7/2023。
+            <MdCheckCircle/>課程資料已經更新至2/8/2023。
         </div>
     </Popup>;
 }
